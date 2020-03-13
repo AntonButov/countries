@@ -16,7 +16,7 @@ public interface JSONPlaceHolderApi {
     public Call<POJO> getPostWithID(@Path("id") int id);
 
     @GET("rest/v2/all")
-    public Call<LiveData<List<POJO>>> getAllPosts();
+    public Call<List<POJO>> getAllPosts();
 
     @GET("/posts")
     public Call<List<POJO>> getPostOfUser(@Query("userId") int id);

@@ -28,20 +28,23 @@ public class Repository {
 
     public LiveData<List<Countrie>> getAllCountries() {
 
+        networkService = NetworkService.getInstance();
+        jsonPlaceHolderApi = networkService.getJSONApi();
         countries = loadWebservice();
         return countries;
     }
 
     LiveData<List<Countrie>> loadWebservice() {
         MutableLiveData<List<Countrie>> webcontries = new MutableLiveData<>();
-        jsonPlaceHolderApi.getAllPosts().enqueue(new Callback<LiveData<List<POJO>>>() {
+        jsonPlaceHolderApi.getAllPosts().enqueue(new Callback<List<POJO>>() {
             @Override
-            public void onResponse(Call<LiveData<List<POJO>>> call, Response<LiveData<List<POJO>>> response) {
+            public void onResponse(Call<List<POJO>> call, Response<List<POJO>> response) {
                // countries.
             }
 
             @Override
-            public void onFailure(Call<LiveData<List<POJO>>> call, Throwable t) {
+            public void onFailure(Call<List<POJO>> call, Throwable t) {
+                Log.d("DEBUG","api failure " + t);
 
             }
 

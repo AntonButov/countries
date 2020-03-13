@@ -3,49 +3,47 @@ package pro.butovanton.countries;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class POJO {
-    @SerializedName("userId")
+    @SerializedName("name")
     @Expose
-    private int userId;
-    @SerializedName("id")
+    private String name;
+    @SerializedName("capital")
     @Expose
-    private int id;
-    @SerializedName("title")
+    private String capital;
+    @SerializedName("flag")
     @Expose
-    private String title;
-    @SerializedName("body")
+    private String flag;
+    @SerializedName("currencies")
     @Expose
-    private String body;
-
-    public int getUserId() {
-        return userId;
+    public List<currencie> currencies = null;
+    public class currencie {
+        @SerializedName("name")
+        @Expose
+        public String name;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public String getname() {
+        return name;
     }
 
-    public int getId() {
-        return id;
+    public void setname(String name) {
+        this.name = name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getcapital() {
+        return capital;
     }
 
-    public String getTitle() {
-        return title;
+    public void setcapital(String capital) { this.capital = capital; }
+
+    public String getflag() {
+        return flag;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setflag(String flag) {
+        this.flag = flag;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
 }

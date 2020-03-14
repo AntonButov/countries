@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +28,9 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final List<Countrie> countries) {
                 Log.d("DEBUG","data ok");
-                // Update the cached copy of the words in the adapter.
-               // adapter.setWords(words);
+                Intent intent = new Intent(SplashActivity.this, Activity2.class);
+                startActivity(intent);
+                finish();
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });

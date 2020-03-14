@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,11 +36,16 @@ public class Repository {
     }
 
     LiveData<List<Countrie>> loadWebservice() {
-        MutableLiveData<List<Countrie>> webcontries = new MutableLiveData<>();
+        MutableLiveData<List<Countrie>> data = new MutableLiveData<>();
         jsonPlaceHolderApi.getAllPosts().enqueue(new Callback<List<POJO>>() {
             @Override
             public void onResponse(Call<List<POJO>> call, Response<List<POJO>> response) {
-               // countries.
+                List<Countrie> listcountries = new ArrayList<>();
+                for (POJO pojo: response.body())
+                    listcountries.add(new Countrie(pojo.getname(), pojo.getcapital(), pojo.getcurriencies(), pojo.getflag()));
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                data.setValue(listcountries); // finish of data load
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
 
             @Override
@@ -49,7 +55,7 @@ public class Repository {
             }
 
         });
-    return webcontries;
+    return data;
     }
 
 }

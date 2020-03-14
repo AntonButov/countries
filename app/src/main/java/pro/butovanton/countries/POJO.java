@@ -3,6 +3,7 @@ package pro.butovanton.countries;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class POJO {
@@ -17,8 +18,8 @@ public class POJO {
     private String flag;
     @SerializedName("currencies")
     @Expose
-    public List<currencie> currencies = null;
-    public class currencie {
+    public List<Currencie> currencies = null;
+    public class Currencie {
         @SerializedName("name")
         @Expose
         public String name;
@@ -44,6 +45,13 @@ public class POJO {
 
     public void setflag(String flag) {
         this.flag = flag;
+    }
+
+    public List<String> getcurriencies () {
+        List<String> liststring = new ArrayList<>();
+        for (Currencie currencie :  currencies)
+            liststring.add(currencie.name);
+    return liststring;
     }
 
 }

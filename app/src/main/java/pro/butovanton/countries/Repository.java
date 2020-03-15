@@ -28,15 +28,13 @@ public class Repository {
     private LiveData<List<Countrie>> countries = new MutableLiveData<>();
     //  private List<Newm> newmscash = new ArrayList<>();
 
-    private NetworkService networkService;
-    private JSONPlaceHolderApi jsonPlaceHolderApi;
-
     private DownloadManager dm;
     private Context context;
 
     Repository(Application application) {
         dm = (DownloadManager) application.getSystemService(DOWNLOAD_SERVICE);
         context = application.getBaseContext();
+
         //      RoomDatabase db = roomDatabase.getDatabase(application);
         //       dao = db.Dao();
         //     countries = dao.getAllCoutries();
@@ -44,13 +42,16 @@ public class Repository {
 
     public LiveData<List<Countrie>> getAllCountries() {
 
-        networkService = NetworkService.getInstance();
-        jsonPlaceHolderApi = networkService.getJSONApi();
         countries = loadWebservice();
         return countries;
     }
 
     LiveData<List<Countrie>> loadWebservice() {
+        Log.d("DEBUG", "Load from web");
+        NetworkService networkService;
+        JSONPlaceHolderApi jsonPlaceHolderApi;
+        networkService = NetworkService.getInstance();
+        jsonPlaceHolderApi = networkService.getJSONApi();
         MutableLiveData<List<Countrie>> data = new MutableLiveData<>();
         jsonPlaceHolderApi.getAllPosts().enqueue(new Callback<List<POJO>>() {
             @Override

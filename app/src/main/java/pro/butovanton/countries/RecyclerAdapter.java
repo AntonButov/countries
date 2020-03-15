@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
     @Override
     public countrieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item, parent, false);
+
         return new countrieViewHolder(view);
     }
 
@@ -67,6 +69,17 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
             super(view);
             nameT = (TextView) view.findViewById(R.id.name);
             imageView = (ImageView) view.findViewById(R.id.imageViewrecicler);
+
+            String patch = "/sdcard/Android/data/pro.butovanton.countries/files/Flags/test-1.svg";
+            File file = new File(patch);
+            if (!file.exists()) {
+                Log.d("DEBUG", "file find");
+            } else {
+                Uri nuri = Uri.fromFile(file);
+                SvgLoader.pluck()
+                        .with((Activity)context)
+                        .load(nuri, imageView);
+            }
         }
 
         public void setName(String name) {
@@ -76,37 +89,6 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
         public ImageView getImageView(String patch) {
             return imageView;
         }
-    }
-
-    public String ReadFromfile(String fileName, Context context) {
-        StringBuilder ReturnString = new StringBuilder();
-        InputStream fIn = null;
-        InputStreamReader isr = null;
-        BufferedReader input = null;
-        try {
-            fIn = context.getResources().getAssets()
-                    .open(fileName);
-            isr = new InputStreamReader(fIn);
-            input = new BufferedReader(isr);
-            String line = "";
-            while ((line = input.readLine()) != null) {
-                ReturnString.append(line);
-            }
-        } catch (Exception e) {
-            e.getMessage();
-        } finally {
-            try {
-                if (isr != null)
-                    isr.close();
-                if (fIn != null)
-                    fIn.close();
-                if (input != null)
-                    input.close();
-            } catch (Exception e2) {
-                e2.getMessage();
-            }
-        }
-        return ReturnString.toString();
     }
 
 }

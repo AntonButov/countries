@@ -39,19 +39,5 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
            });
-
-        ImageView imageView = findViewById(R.id.imageView);
-
-        String patch = "/sdcard/Android/data/pro.butovanton.countries/files/Flags/test.svg";
-        File file = new File(patch);
-        if (!file.exists()) {
-            Log.d("DEBUG", "file find");
-        }
-        else {
-            Uri nuri = Uri.fromFile(file);
-            SvgLoader.pluck()
-                    .with(this)
-                    .load(nuri, imageView);
-        }
     }
 }

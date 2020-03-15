@@ -80,7 +80,7 @@ public class Repository {
     try {
         String file = "test" + ".svg";
 
-         Uri downloadUri = Uri.parse("https://restcountries.eu/data/afg.svg");
+         Uri downloadUri = Uri.parse("https://restcountries.eu/data/asm.svg");
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.setDestinationInExternalFilesDir(context, "Flags", File.separator + file);

@@ -2,7 +2,10 @@ package pro.butovanton.countries;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -28,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        viewModelCountries = ViewModelProviders.of(this).get(ViewModelCountries.class);
+        viewModelCountries = new ViewModelProvider(this).get(ViewModelCountries.class);
         viewModelCountries.getAllCountries().observe(this, new Observer<List<Countrie>>() {
             @Override
             public void onChanged(@Nullable final List<Countrie> countries) {
@@ -36,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(SplashActivity.this, Activity2.class);
                 startActivity(intent);
+                Activity2.countries = countries;
                 finish();
             }
            });

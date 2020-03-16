@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,28 +22,41 @@ import com.ahmadrosid.svgloader.SvgLoader;
 //import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import static pro.butovanton.countries.SplashActivity.viewModelCountries;
+//import static pro.butovanton.countries.SplashActivity.viewModelCountries;
 
 public class Activity2 extends AppCompatActivity {
   private RecyclerView recyclerView;
+  //public ViewModelCountries viewModelActivity2;
+ // public MutableLiveData<List<Countrie>> mutableLiveData;
+  public static List<Countrie> countries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
+
         recyclerView = findViewById(R.id.reciclerView);
-        final countrieRecyclerAdapter adapter = new countrieRecyclerAdapter(this, viewModelCountries.getAllCountries().getValue());
+     //   viewModelActivity2 = ViewModelProviders.of(this).get(ViewModelCountries.class);
+     //   viewModelActivity2.getAllCountries().observe(this, new Observer<List<Countrie>>() {
+
+     //       @Override
+      //      public void onChanged(List<Countrie> countries) {
+
+      //      }
+
+        final countrieRecyclerAdapter adapter = new countrieRecyclerAdapter(this, countries);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-  //      List<Countrie> countrieList = viewModelCountries.getAllCountries().getValue();
+            //      List<Countrie> countrieList = viewModelCountries.getAllCountries().getValue();
+
 
 
     }
-
 }
 
 

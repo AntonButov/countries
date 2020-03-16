@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadrosid.svgloader.SvgLoader;
@@ -35,10 +37,10 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
     private List<Countrie> countries;
     private static Context context;
 
-    public countrieRecyclerAdapter(Context context, List<Countrie> countries) {
-        this.context = context;
-        mInflater = LayoutInflater.from(context);
-        this.countries = countries;
+    public countrieRecyclerAdapter(Activity2 context, List<Countrie> countries) {
+        this.context = (Context) context;
+        mInflater = LayoutInflater.from((Context) context);
+        this.countries = (List<Countrie>) countries;
     }
 
     @NonNull
@@ -52,6 +54,7 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
     @Override
     public void onBindViewHolder(countrieViewHolder holder, int position) {
         holder.setName(countries.get(position).name);
+
 
     }
 

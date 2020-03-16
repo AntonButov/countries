@@ -43,7 +43,7 @@ public class Repository {
         //     countries = dao.getAllCoutries();
     }
 
-    public LiveData<List<Countrie>> getAllCountries() throws IOException {
+    public LiveData<List<Countrie>> getAllCountries() {
 
         countries = loadWebservice();
         return countries;
@@ -78,7 +78,7 @@ public class Repository {
             }
 
         });
-        downloadFlag2("https://raw.github.com/square/okhttp/master/README.md");
+     //   downloadFlag2("https://raw.github.com/square/okhttp/master/README.md");
         return data;
     }
 

@@ -18,6 +18,7 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,17 +31,21 @@ public class Repository {
 
     private LiveData<List<Countrie>> countries = new MutableLiveData<>();
     //  private List<Newm> newmscash = new ArrayList<>();
+    NetworkService networkService;
+    JSONPlaceHolderApi jsonPlaceHolderApi;
 
     private DownloadManager dm;
    // private Context context;
 
-    Repository(Application application) {
+    public Repository(Application application) {
         dm = (DownloadManager) application.getSystemService(DOWNLOAD_SERVICE);
        // context =;
 
         //      RoomDatabase db = roomDatabase.getDatabase(application);
         //       dao = db.Dao();
         //     countries = dao.getAllCoutries();
+        networkService = NetworkService.getInstance();
+        jsonPlaceHolderApi = networkService.getJSONApi();
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
@@ -51,12 +56,9 @@ public class Repository {
 
     LiveData<List<Countrie>> loadWebservice() {
         Log.d("DEBUG", "Load from web");
-        NetworkService networkService;
-        JSONPlaceHolderApi jsonPlaceHolderApi;
-        networkService = NetworkService.getInstance();
-        jsonPlaceHolderApi = networkService.getJSONApi();
 
         MutableLiveData<List<Countrie>> data = new MutableLiveData<>();
+
         jsonPlaceHolderApi.getAllPosts().enqueue(new Callback<List<POJO>>() {
             @Override
             public void onResponse(Call<List<POJO>> call, Response<List<POJO>> response) {
@@ -69,18 +71,29 @@ public class Repository {
                 data.setValue(listcountries); // finish of data load
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
-
-
             @Override
             public void onFailure(Call<List<POJO>> call, Throwable t) {
                 Log.d("DEBUG", "api failure " + t);
-
             }
-
         });
-     //   downloadFlag2("https://raw.github.com/square/okhttp/master/README.md");
+
+        downloadflag();
         return data;
     }
+
+        void downloadflag() {
+            jsonPlaceHolderApi.downloadFlag("https://restcountries.eu/data/asm.svg").enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("DEBUG", "download flags failure");
+                }
+            });
+        }
 
         void downloadFlag2(String url) {
             OkHttpClient client = new OkHttpClient();
@@ -89,7 +102,7 @@ public class Repository {
                     .url(url)
                     .build();
 
-            try (okhttp3.Response response = client.newCall(request).execute()) {
+           try (okhttp3.Response response = client.newCall(request).execute()) {
                 response.body();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -100,7 +113,7 @@ public class Repository {
 
 
 
-    private void downloadFlag() {
+    private void downloadFlag1() {
     try {
         String file = "test" + ".svg";
 

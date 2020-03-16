@@ -19,7 +19,11 @@ import android.widget.ProgressBar;
 import com.ahmadrosid.svgloader.SvgLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class SplashActivity extends AppCompatActivity {
     ProgressBar progressBar;
@@ -40,8 +44,17 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent = new Intent(SplashActivity.this, Activity2.class);
                 startActivity(intent);
                 Activity2.countries = countries;
-                finish();
+
+                //finish();
             }
            });
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModelCountries.getAllCountries().removeObservers(this);
     }
 }

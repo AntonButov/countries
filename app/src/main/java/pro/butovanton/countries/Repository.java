@@ -2,17 +2,17 @@ package pro.butovanton.countries;
 
 import android.app.Application;
 import android.app.DownloadManager;
-import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
-import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class Repository {
 
@@ -35,9 +33,11 @@ public class Repository {
     JSONPlaceHolderApi jsonPlaceHolderApi;
 
     private DownloadManager dm;
+    private Application application;
    // private Context context;
 
     public Repository(Application application) {
+        this.application = application;
         dm = (DownloadManager) application.getSystemService(DOWNLOAD_SERVICE);
        // context =;
 
@@ -67,6 +67,13 @@ public class Repository {
                     listcountries.add(new Countrie(pojo.getname(), pojo.getcapital(), pojo.getcurriencies(), pojo.getflag()));
 
 
+
+
+
+
+
+
+                String s = downloadflag(listcountries.get(0).flag);
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 data.setValue(listcountries); // finish of data load
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,16 +83,16 @@ public class Repository {
                 Log.d("DEBUG", "api failure " + t);
             }
         });
-
-        downloadflag();
         return data;
     }
 
-        void downloadflag() {
-            jsonPlaceHolderApi.downloadFlag("https://restcountries.eu/data/asm.svg").enqueue(new Callback<ResponseBody>() {
+        String downloadflag(String patch) {
+          //  final String[] res = new String[1];
+            jsonPlaceHolderApi.downloadFlag(patch).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                String res = writeResponseBodyToDisk(response.body());
+                Log.d("DEBUG", res);
                 }
 
                 @Override
@@ -93,7 +100,60 @@ public class Repository {
                     Log.d("DEBUG", "download flags failure");
                 }
             });
+        //    return res[0];
+        Log.d("DEBUG","return");
+        return "";
         }
+
+    private String writeResponseBodyToDisk(ResponseBody body) {
+        try {
+            // todo change the file location/name according to your needs
+            File futureStudioIconFile = new File(application.getApplicationContext().getExternalFilesDir(null) + File.separator + "Future Studio Icon.svg");
+            String res = futureStudioIconFile.getAbsolutePath();
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d("DEBUG", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return res;
+            } catch (IOException e) {
+                return "";
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return "";
+        }
+    }
 
         void downloadFlag2(String url) {
             OkHttpClient client = new OkHttpClient();

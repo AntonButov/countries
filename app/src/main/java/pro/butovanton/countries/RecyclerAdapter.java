@@ -54,10 +54,7 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
     @Override
     public void onBindViewHolder(countrieViewHolder holder, int position) {
         holder.setName(countries.get(position).name);
-
-
     }
-
 
     @Override
     public int getItemCount() {

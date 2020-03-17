@@ -8,8 +8,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.reactivestreams.Subscription;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,16 +18,12 @@ import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,13 +96,8 @@ public class Repository {
 
                    Observable.range(1,10)
                            .map(i2 -> {
-                                                              Integer i;
-                                                             for ( i = 1; i<5; i ++) {
-                                                             //    Log.d("DEBUG", i.toString());
-                                                                 for (int i1 = 1; i1 < 100; i1++)
-                                                                     for (int j = 1; j < 10000000; j++)
-                                                                         ;
-                                                             }
+                               //downloadflag(listcountries.get(i2).flag);
+                              Log.d("DEBUG", writeResponseBodyToDisk(downloadflagSinch(listcountries.get(i2).flag)));
                            return i2;
                            }
 
@@ -120,7 +109,6 @@ public class Repository {
                                public void onSubscribe(@NonNull Disposable d) {
                                    Log.d("DEBUG","onSubscribe" + d.toString());
                                }
-
                                @Override
                                public void onNext(@NonNull Integer integer) {
                                    Log.d("DEBUG","onNext" + integer);
@@ -166,22 +154,24 @@ public class Repository {
         return data;
     }
 
-    String downloadflagSinch(String patch) {
+    Response<ResponseBody> downloadflagSinch(String patch) {
         Response<ResponseBody> responseBody = null;
         try {
             responseBody = jsonPlaceHolderApi.downloadFlag(patch).execute();
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("DEBUG","download failure " + e);
         }
 
-        return responseBody.toString();
+        return responseBody;
     }
+
         String downloadflag(String patch) {
 
             jsonPlaceHolderApi.downloadFlag(patch).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String res = writeResponseBodyToDisk(response.body());
+           //     String res = writeResponseBodyToDisk(response.body());
            //     Log.d("DEBUG", res);
                 }
 
@@ -195,7 +185,7 @@ public class Repository {
         return "";
         }
 
-    private String writeResponseBodyToDisk(ResponseBody body) {
+    private String writeResponseBodyToDisk(Response<ResponseBody> body) {
         try {
             // todo change the file location/name according to your needs
             File futureStudioIconFile = new File(application.getApplicationContext().getExternalFilesDir(null) + File.separator + "Future Studio Icon.svg");
@@ -206,10 +196,10 @@ public class Repository {
             try {
                 byte[] fileReader = new byte[4096];
 
-                long fileSize = body.contentLength();
+                long fileSize = body.body().contentLength();
                 long fileSizeDownloaded = 0;
 
-                inputStream = body.byteStream();
+                inputStream = body.body().byteStream();
                 outputStream = new FileOutputStream(futureStudioIconFile);
 
                 while (true) {

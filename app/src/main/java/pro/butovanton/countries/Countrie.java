@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "table")
+@Entity(tableName = "ctable")
 public class Countrie {
     @PrimaryKey
     @NonNull

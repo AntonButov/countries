@@ -15,9 +15,9 @@ public interface cDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Countrie countrie);
 
-//    @Query("DELETE FROM table")
-//    void deleteAll();
+    @Query("DELETE FROM ctable")
+    void deleteAll();
 
-//    @Query("SELECT * from table ORDER BY name ASC")
-//    LiveData<List<Countrie>> getAllWords();
+    @Query("SELECT * from ctable ORDER BY name ASC")
+    LiveData<List<Countrie>> getAllWords();
 }

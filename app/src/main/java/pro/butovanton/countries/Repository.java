@@ -7,12 +7,15 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.RoomDatabase;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,24 +37,18 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class Repository {
 
     private LiveData<List<Countrie>> countries = new MutableLiveData<>();
-    //  private List<Newm> newmscash = new ArrayList<>();
+    private cDao dao;
+
+    private Application application;
     NetworkService networkService;
     JSONPlaceHolderApi jsonPlaceHolderApi;
 
-    private DownloadManager dm;
-    private Application application;
-   // private Context context;
-
     public Repository(Application application) {
         this.application = application;
-        dm = (DownloadManager) application.getSystemService(DOWNLOAD_SERVICE);
-       // context =;
+         cRoomDatabase db = cRoomDatabase.getDatabase(application);
+               dao = db.cdao();
 
-        //      RoomDatabase db = roomDatabase.getDatabase(application);
-        //       dao = db.Dao();
-        //     countries = dao.getAllCoutries();
-        networkService = NetworkService.getInstance();
-        jsonPlaceHolderApi = networkService.getJSONApi();
+
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
@@ -62,96 +59,71 @@ public class Repository {
 
     LiveData<List<Countrie>> loadWebservice() {
         Log.d("DEBUG", "Load from web");
-
+        networkService = NetworkService.getInstance();
+        jsonPlaceHolderApi = networkService.getJSONApi();
         MutableLiveData<List<Countrie>> data = new MutableLiveData<>();
-
+        List<Countrie> listcountries = new ArrayList<>();
         jsonPlaceHolderApi.getAllPosts().enqueue(new Callback<List<POJO>>() {
             @Override
             public void onResponse(Call<List<POJO>> call, Response<List<POJO>> response) {
-                List<Countrie> listcountries = new ArrayList<>();
                 for (POJO pojo : response.body())
-                    listcountries.add(new Countrie(pojo.getname(), pojo.getcapital(), pojo.getcurriencies(), pojo.getflag()));
+                    listcountries.add(new Countrie(pojo.getname(), pojo.getcapital(),pojo.getcurriencies().get(0),pojo.getflag(), ""));
 
-   //                Log.d("DEBUG","start");
- //                  Observable.create((ObservableOnSubscribe<Integer>) e -> {
- //                   try {
- //                       Integer i;
-  //                      for ( i = 1; i<5; i ++) {
-   //                         Log.d("DEBUG", i.toString());
-  //                          for (int i1 = 1; i1 < 100; i1++)
-    //                            for (int j = 1; j < 10000000; j++) ;
-   //                     }
-   //                     e.onNext(i);
-   //                     e.onComplete();
-   //                 } catch (Exception ex) {
-   //                     e.onError(ex);
-   //                 }
-   //             })
-   //                     .subscribeOn(Schedulers.io())
-   //                     .observeOn(AndroidSchedulers.mainThread())
-   //                     .subscribe(match -> Log.d("DEBUG","rest api, success"),
-    //                            throwable -> Log.d("DEBUG","rest api, error: %s" + throwable.getMessage()));
-    //               Log.d("DEBUG","finish");
+                Observable.range(0,listcountries.size())
+                        .map(i2 -> {
+                                    String url = listcountries.get(i2).flag;
+                                    Response<ResponseBody> responseBody = downloadflagSinch(url);
+                                    String patch = writeResponseBodyToDisk(responseBody, getFilename(url));
+                                    listcountries.get(i2).flagpatch = patch;
+                                    Log.d("DEBUG", patch);
+                                    return i2;
+                                }
 
+                        )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Integer>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                Log.d("DEBUG", "onSubscribe" + d.toString());
+                            }
 
-                   Observable.range(1,10)
-                           .map(i2 -> {
-                               //downloadflag(listcountries.get(i2).flag);
-                              Log.d("DEBUG", writeResponseBodyToDisk(downloadflagSinch(listcountries.get(i2).flag)));
-                           return i2;
+                            @Override
+                            public void onNext(@NonNull Integer integer) {
+                           //     Log.d("DEBUG", "onNext");
+                           }
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.d("DEBUG", "onError" + e);
                            }
 
-                           )
-                           .subscribeOn(Schedulers.io())
-                           .observeOn(AndroidSchedulers.mainThread())
-                           .subscribe(new Observer<Integer>() {
-                               @Override
-                               public void onSubscribe(@NonNull Disposable d) {
-                                   Log.d("DEBUG","onSubscribe" + d.toString());
-                               }
-                               @Override
-                               public void onNext(@NonNull Integer integer) {
-                                   Log.d("DEBUG","onNext" + integer);
-                               }
-
-                               @Override
-                               public void onError(@NonNull Throwable e) {
-
-                               }
-
-                               @Override
-                               public void onComplete() {
-                                   Log.d("DEBUG","onComplete");
-                                   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                   data.setValue(listcountries); // finish of data load
-                                   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                               }
-                           });
-                Log.d("DEBUG","finish");
-      //                     .
-       //         List<String> files = Arrays.asList("file0", "file1", "file2");
-       //         Observable.from(files)
-       //                 .flatMap(file -> uploadFile(file)
-       //                 .flatMap(done -> notifyFinished(file)))
-       //                 .subscribe(this::onNext,
-       //                         this::onError,
-       //                         this::onCompleted);
-       //         private Observable<Boolean> uploadFile(String file)
-       //         { Timber.d("Uploading: " + file); return Observable.just(true).delay(6, TimeUnit.SECONDS); }
-       //         private Observable<Boolean> notifyFinished(String file)
-       //         { Timber.d("Notify finished: " + file);
-       //         return Observable.just(true).delay
-       //          (3, TimeUnit.SECONDS); }
-
-
-                //       String s = downloadflag(listcountries.get(0).flag);
-             }
-            @Override
+                            @Override
+                            public void onComplete() {
+                                Log.d("DEBUG", "onComplite");
+                                //Проверку на полноту загрузки надо бы по хорошему
+                                for (int i = 0; i < listcountries.size(); i++)
+                                    if (listcountries.get(i).flagpatch == "") {
+                                        listcountries.clear();
+                                        break;
+                                    }
+                                if (listcountries.size() > 0) savetoRoom(listcountries);
+                                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                data.setValue(listcountries); // finish of data load
+                                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            }
+                        });
+            }
+             @Override
             public void onFailure(Call<List<POJO>> call, Throwable t) {
                 Log.d("DEBUG", "api failure " + t);
+                 data.setValue(listcountries);
             }
         });
-        return data;
+    return data;
+    }
+
+    void savetoRoom(List<Countrie> countrieList) {
+
     }
 
     Response<ResponseBody> downloadflagSinch(String patch) {
@@ -171,8 +143,7 @@ public class Repository {
             jsonPlaceHolderApi.downloadFlag(patch).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-           //     String res = writeResponseBodyToDisk(response.body());
-           //     Log.d("DEBUG", res);
+
                 }
 
                 @Override
@@ -185,10 +156,10 @@ public class Repository {
         return "";
         }
 
-    private String writeResponseBodyToDisk(Response<ResponseBody> body) {
+    private String writeResponseBodyToDisk(Response<ResponseBody> body, String filename) {
         try {
             // todo change the file location/name according to your needs
-            File futureStudioIconFile = new File(application.getApplicationContext().getExternalFilesDir(null) + File.separator + "Future Studio Icon.svg");
+            File futureStudioIconFile = new File(application.getApplicationContext().getExternalFilesDir(null) + File.separator + filename);
             String res = futureStudioIconFile.getAbsolutePath();
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -235,6 +206,14 @@ public class Repository {
         }
     }
 
+       String getFilename(String patch) {
+        Uri uri= Uri.parse(patch);
+        return new File(uri.getPath()).getName(); //даст имя с расширением
+        }
+
+
+
+
         void downloadFlag2(String url) {
             OkHttpClient client = new OkHttpClient();
 
@@ -261,7 +240,7 @@ public class Repository {
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
    //     request.setDestinationInExternalFilesDir(context, "Flags", File.separator + file);
-        dm.enqueue(request);
+    //    dm.enqueue(request);
     } catch (IllegalStateException ex) {
         ex.printStackTrace();
         Log.d("DEBUG", "Storage error! " + ex);

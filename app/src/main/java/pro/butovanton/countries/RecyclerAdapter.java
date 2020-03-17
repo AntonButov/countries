@@ -54,6 +54,16 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
     @Override
     public void onBindViewHolder(countrieViewHolder holder, int position) {
         holder.setName(countries.get(position).name);
+        String patch = countries.get(position).flagpatch;
+        File file = new File(patch);
+        if (!file.exists()) {
+            // Log.d("DEBUG", "file find");
+        } else {
+            Uri nuri = Uri.fromFile(file);
+            SvgLoader.pluck()
+                    .with((Activity)context)
+                    .load(nuri, holder.imageView);
+        }
     }
 
     @Override
@@ -69,17 +79,6 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
             super(view);
             nameT = (TextView) view.findViewById(R.id.name);
             imageView = (ImageView) view.findViewById(R.id.imageViewrecicler);
-
-            String patch = "/sdcard/Android/data/pro.butovanton.countries/files/Flags/test-1.svg";
-            File file = new File(patch);
-            if (!file.exists()) {
-               // Log.d("DEBUG", "file find");
-            } else {
-                Uri nuri = Uri.fromFile(file);
-                SvgLoader.pluck()
-                        .with((Activity)context)
-                        .load(nuri, imageView);
-            }
         }
 
         public void setName(String name) {

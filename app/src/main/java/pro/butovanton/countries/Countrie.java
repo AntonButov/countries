@@ -1,17 +1,28 @@
 package pro.butovanton.countries;
 
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+
+@Entity(tableName = "table")
 public class Countrie {
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "name")
     String name;
     String capital;
-    List<String> currencies;
+    String currencie;
     String flag;
+    String flagpatch;
 
-    public Countrie(String name, String capital, List<String> curriencies, String flag) {
+
+    public Countrie(@NonNull String name, String capital, String currencie, String flag, String flagpatch) {
         this.name = name;
         this.capital = capital;
-        this.currencies = curriencies;
+        this.currencie = currencie;
         this.flag = flag;
+        this.flagpatch = flagpatch;
     }
 }

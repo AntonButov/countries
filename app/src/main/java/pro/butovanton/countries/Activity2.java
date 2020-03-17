@@ -50,7 +50,7 @@ public class Activity2 extends AppCompatActivity {
         final countrieRecyclerAdapter adapter = new countrieRecyclerAdapter(this, countries);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        recyclerView.setHasFixedSize(true);
 
             //      List<Countrie> countrieList = viewModelCountries.getAllCountries().getValue();
 

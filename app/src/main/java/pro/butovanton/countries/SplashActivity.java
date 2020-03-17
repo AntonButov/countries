@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ahmadrosid.svgloader.SvgLoader;
 
@@ -41,10 +42,15 @@ public class SplashActivity extends AppCompatActivity {
             public void onChanged(@Nullable final List<Countrie> countries) {
                 Log.d("DEBUG", "data ok");
                 progressBar.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(SplashActivity.this, Activity2.class);
-                startActivity(intent);
-                Activity2.countries = countries;
-
+                if (countries != null && countries.size() > 0) {
+                    Intent intent = new Intent(SplashActivity.this, Activity2.class);
+                    startActivity(intent);
+                    Activity2.countries = countries;
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Отсутсвует интернет.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 //finish();
             }
            });

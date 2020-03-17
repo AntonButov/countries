@@ -52,8 +52,9 @@ public class Repository {
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
-
-        countries = loadWebservice();
+       countries = dao.getAll();
+       if (countries.getValue() == null)
+           countries = loadWebservice();
         return countries;
     }
 
@@ -123,7 +124,9 @@ public class Repository {
     }
 
     void savetoRoom(List<Countrie> countrieList) {
-
+       for (int i = 0; i < countrieList.size(); i++ )
+      //     dao.insert(countrieList.get(i));
+   //    Log.d("DEBUG", "bd seved ok")
     }
 
     Response<ResponseBody> downloadflagSinch(String patch) {

@@ -19,5 +19,5 @@ public interface cDao {
     void deleteAll();
 
     @Query("SELECT * from ctable ORDER BY name ASC")
-    LiveData<List<Countrie>> getAllWords();
+    LiveData<List<Countrie>> getAll();
 }

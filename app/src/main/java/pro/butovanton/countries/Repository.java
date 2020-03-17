@@ -16,8 +16,14 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,13 +73,27 @@ public class Repository {
                     listcountries.add(new Countrie(pojo.getname(), pojo.getcapital(), pojo.getcurriencies(), pojo.getflag()));
 
 
+                Observable.create((ObservableOnSubscribe<String>) e -> {
+                    try {
+                       String s = "API.getdata";
+                       Log.d("DEBUG","1");
+                       for (int i = 1;i <  10; i++)
+                           for (int j = 1;j <  10000000; j++);
+
+                        Log.d("DEBUG","1");
+                        e.onNext(s);
+                    } catch (Exception ex) {
+                        e.onError(ex);
+                    }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(match -> Log.d("DEBUG","rest api, success"),
+                                throwable -> Log.d("DEBUG","rest api, error: %s" + throwable.getMessage()));
 
 
 
-
-
-
-                String s = downloadflag(listcountries.get(0).flag);
+         //       String s = downloadflag(listcountries.get(0).flag);
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 data.setValue(listcountries); // finish of data load
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,12 +107,12 @@ public class Repository {
     }
 
         String downloadflag(String patch) {
-          //  final String[] res = new String[1];
+
             jsonPlaceHolderApi.downloadFlag(patch).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String res = writeResponseBodyToDisk(response.body());
-                Log.d("DEBUG", res);
+           //     Log.d("DEBUG", res);
                 }
 
                 @Override

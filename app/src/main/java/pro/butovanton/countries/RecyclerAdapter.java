@@ -73,7 +73,7 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
             String patch = "/sdcard/Android/data/pro.butovanton.countries/files/Flags/test-1.svg";
             File file = new File(patch);
             if (!file.exists()) {
-                Log.d("DEBUG", "file find");
+               // Log.d("DEBUG", "file find");
             } else {
                 Uri nuri = Uri.fromFile(file);
                 SvgLoader.pluck()

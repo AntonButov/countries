@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.reactivestreams.Subscription;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,9 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -72,32 +78,86 @@ public class Repository {
                 for (POJO pojo : response.body())
                     listcountries.add(new Countrie(pojo.getname(), pojo.getcapital(), pojo.getcurriencies(), pojo.getflag()));
 
+   //                Log.d("DEBUG","start");
+ //                  Observable.create((ObservableOnSubscribe<Integer>) e -> {
+ //                   try {
+ //                       Integer i;
+  //                      for ( i = 1; i<5; i ++) {
+   //                         Log.d("DEBUG", i.toString());
+  //                          for (int i1 = 1; i1 < 100; i1++)
+    //                            for (int j = 1; j < 10000000; j++) ;
+   //                     }
+   //                     e.onNext(i);
+   //                     e.onComplete();
+   //                 } catch (Exception ex) {
+   //                     e.onError(ex);
+   //                 }
+   //             })
+   //                     .subscribeOn(Schedulers.io())
+   //                     .observeOn(AndroidSchedulers.mainThread())
+   //                     .subscribe(match -> Log.d("DEBUG","rest api, success"),
+    //                            throwable -> Log.d("DEBUG","rest api, error: %s" + throwable.getMessage()));
+    //               Log.d("DEBUG","finish");
 
-                Observable.create((ObservableOnSubscribe<String>) e -> {
-                    try {
-                       String s = "API.getdata";
-                       Log.d("DEBUG","1");
-                       for (int i = 1;i <  10; i++)
-                           for (int j = 1;j <  10000000; j++);
 
-                        Log.d("DEBUG","1");
-                        e.onNext(s);
-                    } catch (Exception ex) {
-                        e.onError(ex);
-                    }
-                })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(match -> Log.d("DEBUG","rest api, success"),
-                                throwable -> Log.d("DEBUG","rest api, error: %s" + throwable.getMessage()));
+                   Observable.range(1,10)
+                           .map(i2 -> {
+                                                              Integer i;
+                                                             for ( i = 1; i<5; i ++) {
+                                                             //    Log.d("DEBUG", i.toString());
+                                                                 for (int i1 = 1; i1 < 100; i1++)
+                                                                     for (int j = 1; j < 10000000; j++)
+                                                                         ;
+                                                             }
+                           return i2;
+                           }
+
+                           )
+                           .subscribeOn(Schedulers.io())
+                           .observeOn(AndroidSchedulers.mainThread())
+                           .subscribe(new Observer<Integer>() {
+                               @Override
+                               public void onSubscribe(@NonNull Disposable d) {
+                                   Log.d("DEBUG","onSubscribe" + d.toString());
+                               }
+
+                               @Override
+                               public void onNext(@NonNull Integer integer) {
+                                   Log.d("DEBUG","onNext" + integer);
+                               }
+
+                               @Override
+                               public void onError(@NonNull Throwable e) {
+
+                               }
+
+                               @Override
+                               public void onComplete() {
+                                   Log.d("DEBUG","onComplete");
+                                   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                   data.setValue(listcountries); // finish of data load
+                                   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                               }
+                           });
+                Log.d("DEBUG","finish");
+      //                     .
+       //         List<String> files = Arrays.asList("file0", "file1", "file2");
+       //         Observable.from(files)
+       //                 .flatMap(file -> uploadFile(file)
+       //                 .flatMap(done -> notifyFinished(file)))
+       //                 .subscribe(this::onNext,
+       //                         this::onError,
+       //                         this::onCompleted);
+       //         private Observable<Boolean> uploadFile(String file)
+       //         { Timber.d("Uploading: " + file); return Observable.just(true).delay(6, TimeUnit.SECONDS); }
+       //         private Observable<Boolean> notifyFinished(String file)
+       //         { Timber.d("Notify finished: " + file);
+       //         return Observable.just(true).delay
+       //          (3, TimeUnit.SECONDS); }
 
 
-
-         //       String s = downloadflag(listcountries.get(0).flag);
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                data.setValue(listcountries); // finish of data load
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            }
+                //       String s = downloadflag(listcountries.get(0).flag);
+             }
             @Override
             public void onFailure(Call<List<POJO>> call, Throwable t) {
                 Log.d("DEBUG", "api failure " + t);
@@ -106,6 +166,16 @@ public class Repository {
         return data;
     }
 
+    String downloadflagSinch(String patch) {
+        Response<ResponseBody> responseBody = null;
+        try {
+            responseBody = jsonPlaceHolderApi.downloadFlag(patch).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return responseBody.toString();
+    }
         String downloadflag(String patch) {
 
             jsonPlaceHolderApi.downloadFlag(patch).enqueue(new Callback<ResponseBody>() {

@@ -48,12 +48,14 @@ public class Repository {
         this.application = application;
          cRoomDatabase db = cRoomDatabase.getDatabase(application);
                dao = db.cdao();
+        //       dao.deleteAll();
+               countries = dao.getAll();
 
 
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
-       countries = dao.getAll();
+    //   countries = dao.getAll();
        if (countries.getValue() == null)
            countries = loadWebservice();
         return countries;

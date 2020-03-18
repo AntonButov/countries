@@ -8,15 +8,12 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.RoomDatabase;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +30,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
-
 public class Repository {
 
     private LiveData<List<Countrie>> countries;
@@ -48,9 +43,10 @@ public class Repository {
         this.application = application;
          cRoomDatabase db = cRoomDatabase.getDatabase(application);
                dao = db.cdao();
-        //       dao.deleteAll();
-               countries = dao.getAll();
 
+  //      getAllAsinch userServices=new getAllAsinch();
+   //     List<Countrie> countries1 = userServices.getAllAsinch();
+        List<Countrie> countries1 = dao.getAll();
 
     }
 
@@ -127,10 +123,27 @@ public class Repository {
     return data;
     }
 
-    void savetoRoom(List<Countrie> countrieList) {
-   //    for (int i = 0; i < countrieList.size(); i++ )
-      //     dao.insert(countrieList.get(i));
-   //    Log.d("DEBUG", "bd seved ok")
+    public class getAllAsinch{
+
+        private cDao mAsyncTaskDao ;
+
+        public getAllAsinch(){
+            mAsyncTaskDao = dao;
+
+        }
+
+        public List<Countrie> getAllAsinch(){
+            return (List<Countrie>) new GetUsersAsyncTask().execute();
+        }
+
+
+        private class GetUsersAsyncTask extends AsyncTask<Void, Void, List<Countrie>>
+        {
+            @Override
+            protected List<Countrie> doInBackground(Void... url) {
+                return mAsyncTaskDao.getAll();
+            }
+        }
     }
 
     Response<ResponseBody> downloadflagSinch(String patch) {

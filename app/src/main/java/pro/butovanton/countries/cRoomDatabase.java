@@ -23,6 +23,7 @@ public abstract class cRoomDatabase extends RoomDatabase {
                     // Create database here
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             cRoomDatabase.class, "database")
+                            .allowMainThreadQueries()
                             .build();
                 }
             }

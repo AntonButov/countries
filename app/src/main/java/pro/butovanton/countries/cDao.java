@@ -9,6 +9,8 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 
 @Dao
 public interface cDao {
@@ -19,5 +21,5 @@ public interface cDao {
     void deleteAll();
 
     @Query("SELECT * from ctable ORDER BY name ASC")
-    LiveData<List<Countrie>> getAll();
+    List<Countrie> getAll();
 }

@@ -44,8 +44,6 @@ public class Repository {
          cRoomDatabase db = cRoomDatabase.getDatabase(application);
                dao = db.cdao();
 
-  //      getAllAsinch userServices=new getAllAsinch();
-   //     List<Countrie> countries1 = userServices.getAllAsinch();
         List<Countrie> countrieList = dao.getAll();
         if (countrieList.size() > 0) {
             MutableLiveData<List<Countrie>> data = new MutableLiveData<>();
@@ -56,8 +54,7 @@ public class Repository {
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
-    //   countries = dao.getAll();
-//       if (countries.getValue() == null)
+
       return countries;
     }
 
@@ -160,7 +157,7 @@ public class Repository {
     private String writeResponseBodyToDisk(Response<ResponseBody> body, String filename) {
         try {
             // todo change the file location/name according to your needs
-            File futureStudioIconFile = new File(application.getApplicationContext().getExternalFilesDir(null) + File.separator + filename);
+            File futureStudioIconFile = new File(application.getApplicationContext().getFilesDir() + File.separator + filename);
             String res = futureStudioIconFile.getAbsolutePath();
             InputStream inputStream = null;
             OutputStream outputStream = null;

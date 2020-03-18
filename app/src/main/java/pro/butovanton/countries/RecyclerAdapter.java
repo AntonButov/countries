@@ -18,18 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadrosid.svgloader.SvgLoader;
-//import com.bumptech.glide.Glide;
-//import com.bumptech.glide.RequestBuilder;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapter.countrieViewHolder> {

@@ -3,6 +3,7 @@ package pro.butovanton.countries;
 import android.app.Application;
 import android.app.DownloadManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -36,7 +37,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class Repository {
 
-    private LiveData<List<Countrie>> countries = new MutableLiveData<>();
+    private LiveData<List<Countrie>> countries;
     private cDao dao;
 
     private Application application;
@@ -107,7 +108,8 @@ public class Repository {
                                         listcountries.clear();
                                         break;
                                     }
-                                if (listcountries.size() > 0) savetoRoom(listcountries);
+                                if (listcountries.size() > 0)
+                                      new saveRoom(dao).execute(listcountries);
                                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 data.setValue(listcountries); // finish of data load
                                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +126,7 @@ public class Repository {
     }
 
     void savetoRoom(List<Countrie> countrieList) {
-       for (int i = 0; i < countrieList.size(); i++ )
+   //    for (int i = 0; i < countrieList.size(); i++ )
       //     dao.insert(countrieList.get(i));
    //    Log.d("DEBUG", "bd seved ok")
     }
@@ -214,6 +216,22 @@ public class Repository {
         return new File(uri.getPath()).getName(); //даст имя с расширением
         }
 
+    private static class saveRoom extends AsyncTask<List<Countrie>, Void, Void> {
+
+        private cDao mAsyncTaskDao;
+
+        saveRoom(cDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final List<Countrie>... params) {
+                for (int i = 0; i < params[0].size(); i++ )
+                mAsyncTaskDao.insert(params[0].get(i));
+                Log.d("DEBUG", "bd seved ok");
+            return null;
+        }
+    }
 
 
 

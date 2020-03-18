@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
@@ -39,22 +40,10 @@ public class Activity2 extends AppCompatActivity {
         setContentView(R.layout.activity_2);
 
         recyclerView = findViewById(R.id.reciclerView);
-     //   viewModelActivity2 = ViewModelProviders.of(this).get(ViewModelCountries.class);
-     //   viewModelActivity2.getAllCountries().observe(this, new Observer<List<Countrie>>() {
-
-     //       @Override
-      //      public void onChanged(List<Countrie> countries) {
-
-      //      }
-
         final countrieRecyclerAdapter adapter = new countrieRecyclerAdapter(this, countries);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-
-            //      List<Countrie> countrieList = viewModelCountries.getAllCountries().getValue();
-
-
 
     }
 }

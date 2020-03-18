@@ -17,7 +17,7 @@ public class ViewModelCountries extends AndroidViewModel {
 
     public ViewModelCountries(Application application) {
         super(application);
-       Log.d("DEBUG","repository load");
+       Log.d("DEBUG","view model");
        repository = new Repository(application);
        countries = repository.getAllCountries();
     }
@@ -25,4 +25,5 @@ public class ViewModelCountries extends AndroidViewModel {
     public LiveData<List<Countrie>> getAllCountries() {
         return countries;
     }
+
 }

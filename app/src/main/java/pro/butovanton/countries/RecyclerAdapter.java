@@ -37,10 +37,10 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
     private List<Countrie> countries;
     private static Context context;
 
-    public countrieRecyclerAdapter(Activity2 context, List<Countrie> countries) {
-        this.context = (Context) context;
+    public countrieRecyclerAdapter(Context context, List<Countrie> countries) {
+        this.context = context;
         mInflater = LayoutInflater.from((Context) context);
-        this.countries = (List<Countrie>) countries;
+        this.countries = countries;
     }
 
     @NonNull

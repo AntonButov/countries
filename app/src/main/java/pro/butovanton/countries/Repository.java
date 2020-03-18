@@ -46,15 +46,19 @@ public class Repository {
 
   //      getAllAsinch userServices=new getAllAsinch();
    //     List<Countrie> countries1 = userServices.getAllAsinch();
-        List<Countrie> countries1 = dao.getAll();
-
+        List<Countrie> countrieList = dao.getAll();
+        if (countrieList.size() > 0) {
+            MutableLiveData<List<Countrie>> data = new MutableLiveData<>();
+            countries = data;
+            data.setValue(countrieList);
+        }
+        else countries  = loadWebservice();
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
     //   countries = dao.getAll();
-       if (countries.getValue() == null)
-           countries = loadWebservice();
-        return countries;
+//       if (countries.getValue() == null)
+      return countries;
     }
 
     LiveData<List<Countrie>> loadWebservice() {
@@ -121,29 +125,6 @@ public class Repository {
             }
         });
     return data;
-    }
-
-    public class getAllAsinch{
-
-        private cDao mAsyncTaskDao ;
-
-        public getAllAsinch(){
-            mAsyncTaskDao = dao;
-
-        }
-
-        public List<Countrie> getAllAsinch(){
-            return (List<Countrie>) new GetUsersAsyncTask().execute();
-        }
-
-
-        private class GetUsersAsyncTask extends AsyncTask<Void, Void, List<Countrie>>
-        {
-            @Override
-            protected List<Countrie> doInBackground(Void... url) {
-                return mAsyncTaskDao.getAll();
-            }
-        }
     }
 
     Response<ResponseBody> downloadflagSinch(String patch) {

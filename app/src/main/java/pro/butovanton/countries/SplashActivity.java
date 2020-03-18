@@ -32,6 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.SplashTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
@@ -52,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "Отсутсвует интернет.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
-                //finish();
+                finish();
             }
            });
 

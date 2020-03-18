@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="www.rbc.ru"
-        android:textSize="16dp"
+        android:textSize="24dp"
         app:layout_constraintEnd_toStartOf="@+id/imageViewrecicler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/imageViewrecicler"
         android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_gravity="right"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -28,9 +28,9 @@ public class Activity3 extends AppCompatActivity {
         tcur = findViewById(R.id.textCur);
         imageView = findViewById(R.id.imageViewF);
         Intent intent = getIntent();
-        tname.setText("Name " + intent.getStringExtra("name"));
-        tcapital.setText("Capital " + intent.getStringExtra("capital"));
-        tcur.setText("Currencie" + intent.getStringExtra("currencie"));
+        tname.setText("Name: " + intent.getStringExtra("name"));
+        tcapital.setText("Capital: " + intent.getStringExtra("capital"));
+        tcur.setText("Currencie: " + intent.getStringExtra("currencie"));
         String patch = intent.getStringExtra("flagpatch");
         File file = new File(patch);
         if (!file.exists()) {

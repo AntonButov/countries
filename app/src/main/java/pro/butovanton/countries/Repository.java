@@ -54,7 +54,6 @@ public class Repository {
     }
 
     public LiveData<List<Countrie>> getAllCountries() {
-
       return countries;
     }
 
@@ -225,47 +224,6 @@ public class Repository {
             return null;
         }
     }
-
-
-
-        void downloadFlag2(String url) {
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-           try (okhttp3.Response response = client.newCall(request).execute()) {
-                response.body();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d("DEBUG", "File don't download");
-            }
-        }
-
-
-
-
-    private void downloadFlag1() {
-    try {
-        String file = "test" + ".svg";
-
-         Uri downloadUri = Uri.parse("http://www.clker.com/cliparts/u/Z/2/b/a/6/android-toy-h.svg");
-        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-   //     request.setDestinationInExternalFilesDir(context, "Flags", File.separator + file);
-    //    dm.enqueue(request);
-    } catch (IllegalStateException ex) {
-        ex.printStackTrace();
-        Log.d("DEBUG", "Storage error! " + ex);
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        Log.d("DEBUG","Unable to save image " + ex);
-    }
-
-
-}
-
 
 
 }

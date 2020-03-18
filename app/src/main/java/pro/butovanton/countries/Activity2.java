@@ -13,26 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.MotionEvent;
+import android.view.View;
 
-import com.ahmadrosid.svgloader.SvgLoader;
-//import com.bumptech.glide.request.RequestOptions;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-//import static pro.butovanton.countries.SplashActivity.viewModelCountries;
 
 public class Activity2 extends AppCompatActivity {
-  private RecyclerView recyclerView;
-  //public ViewModelCountries viewModelActivity2;
- // public MutableLiveData<List<Countrie>> mutableLiveData;
-  public static List<Countrie> countries;
+    private RecyclerView recyclerView;
+    public static List<Countrie> countries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +35,6 @@ public class Activity2 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-
     }
 }
 

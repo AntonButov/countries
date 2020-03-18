@@ -2,6 +2,7 @@ package pro.butovanton.countries;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
@@ -60,6 +61,7 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
         return countries.size();
     }
 
+
     public class countrieViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameT;
         private final ImageView imageView;
@@ -68,6 +70,16 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
             super(view);
             nameT = (TextView) view.findViewById(R.id.name);
             imageView = (ImageView) view.findViewById(R.id.imageViewrecicler);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Activity3.class);
+                    context.startActivity(intent);
+                    Activity2.countries = countries;
+
+                    Log.d("DEBUG","click " + getAdapterPosition());
+                }
+            });
         }
 
         public void setName(String name) {

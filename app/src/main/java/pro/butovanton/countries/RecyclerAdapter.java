@@ -74,9 +74,11 @@ class countrieRecyclerAdapter extends RecyclerView.Adapter<countrieRecyclerAdapt
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, Activity3.class);
+                    intent.putExtra("name", countries.get(getAdapterPosition()).name);
+                    intent.putExtra("capital", countries.get(getAdapterPosition()).capital);
+                    intent.putExtra("currencie", countries.get(getAdapterPosition()).currencie);
+                    intent.putExtra("flagpatch", countries.get(getAdapterPosition()).flagpatch);
                     context.startActivity(intent);
-                    Activity2.countries = countries;
-
                     Log.d("DEBUG","click " + getAdapterPosition());
                 }
             });

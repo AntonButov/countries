@@ -37,8 +37,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        viewModelCountries = new ViewModelCountries(getApplication());
-    //    viewModelCountries = new ViewModelProvider(this).get(ViewModelCountries.class);
+     //   viewModelCountries = new ViewModelCountries(getApplication());
+        viewModelCountries = new ViewModelProvider(this).get(ViewModelCountries.class);
         viewModelCountries.getAllCountries().observe(this, new Observer<List<Countrie>>() {
             @Override
             public void onChanged(@Nullable final List<Countrie> countries) {

@@ -24,6 +24,7 @@ import java.util.List;
 public class Activity2 extends AppCompatActivity {
     private RecyclerView recyclerView;
     public static List<Countrie> countries;
+    private ViewModelCountries viewModelCountries2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class Activity2 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+
+    //    viewModelCountries2 = new ViewModelProvider(this).get(ViewModelCountries.class);
     }
 }
 

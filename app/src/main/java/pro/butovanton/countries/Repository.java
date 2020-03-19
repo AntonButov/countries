@@ -30,16 +30,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Repository {
-
-    private LiveData<List<Countrie>> countries;
+public class Repository extends Application {
+    private static Repository INSTANCE;
+    private static LiveData<List<Countrie>> countries;
     private cDao dao;
 
     private Application application;
     NetworkService networkService;
     JSONPlaceHolderApi jsonPlaceHolderApi;
 
-    public Repository(Application application) {
+    private Repository(Application application) {
         this.application = application;
          cRoomDatabase db = cRoomDatabase.getDatabase(application);
                dao = db.cdao();
@@ -53,7 +53,10 @@ public class Repository {
         else countries  = loadWebservice();
     }
 
-    public LiveData<List<Countrie>> getAllCountries() {
+    public static LiveData<List<Countrie>> getAllCountries(Application application) {
+        if (INSTANCE == null) {
+            INSTANCE = new Repository(application);
+        }
       return countries;
     }
 

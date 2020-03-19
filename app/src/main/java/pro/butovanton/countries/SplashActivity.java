@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (countries != null && countries.size() > 0) {
                     Intent intent = new Intent(SplashActivity.this, Activity2.class);
                     startActivity(intent);
-                    Activity2.countries = countries;
+          //          Activity2.countries = countries;
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(), "Отсутсвует интернет.", Toast.LENGTH_SHORT);
@@ -56,7 +56,6 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
            });
-
     }
 
 
